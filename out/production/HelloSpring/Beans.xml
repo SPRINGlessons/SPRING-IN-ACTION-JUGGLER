@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop-3.0.xsd ">
+
+    <aop:aspectj-autoproxy />
+
+    <bean id="duke"
+          class="com.tutorialspoint.PoeticJuggler">
+        <constructor-arg value="15"/>
+        <constructor-arg ref="sonnet29"/>
+    </bean>
+
+    <bean id="op"
+          class="com.tutorialspoint.TrackOperation">
+    </bean>
+
+
+
+    <bean id="sonnet29"
+          class="com.tutorialspoint.Sonnet29"/>
+    <bean id="theStage"
+          class="com.tutorialspoint.Stage"
+          factory-method="getInstance"/>
+    <bean id="ticket"
+          class="com.tutorialspoint.Ticket" scope="prototype"/>
+
+    <bean id="auditorium"
+          class="com.tutorialspoint.Auditorium"
+          init-method="turnOnLights"
+          destroy-method="turnOffLights"/>
+
+    <bean id="aoptestjuggler"
+          class="com.tutorialspoint.Juggler"/>
+
+
+    <bean id="saxophone"
+          class="com.tutorialspoint.Saxophone"/>
+
+
+
+
+    <bean id="kenny2"
+          class="com.tutorialspoint.Instrumentalist">
+        <property name="song" value="Jingle Bells"/>
+        <property name="age" value="37"/>
+        <property name="instrument" ref="saxophone"/>
+    </bean>
+
+
+    <bean id="audience" class="com.tutorialspoint.Audience"></bean>
+
+
+    <!-- DEFINING THE AOP ASPECT -->
+
+    <aop:config>
+        <aop:aspect ref="audience">
+
+
+            <aop:pointcut id="pointCutBefore"   expression="execution(* com.tutorialspoint.TrackOperation.myadvice(..))"/>
+            <aop:before method="takeSeats" pointcut-ref="pointCutBefore"/>
+
+
+            <!-- Перед выступлением
+        <aop:before pointcut=
+                            "execution(* com.tutorialspoint.Performer.perform(..))"
+                    method="turnOffCellPhones" />  Перед выступлением
+        <aop:after-returning pointcut=
+                                     "execution(* com.tutorialspoint.Performer.perform(..))"
+                             method="applaud" />  После выступления
+        <aop:after-throwing pointcut=
+                                    "execution(* com.tutorialspoint.Performer.perform(..))"
+                            method="demandRefund" />  После неудачного выступления -->
+        </aop:aspect>
+    </aop:config>
+
+
+</beans>
